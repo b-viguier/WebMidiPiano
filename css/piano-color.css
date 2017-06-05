@@ -1,0 +1,3 @@
+ul#piano li:nth-child(2n) .key:active {
+    background: linear-gradient(-25deg, #a80e0e, #f52222, #bf2020);
+}

@@ -27,15 +27,6 @@ body {
     height:500px;
 }
 
-a {
-    color:indigo;
-    text-decoration:none;
-}
-
-a:hover {
-    text-decoration:underline;
-}
-
 /* Piano Wrapper */
 #p-wrapper {
     background:#000;
