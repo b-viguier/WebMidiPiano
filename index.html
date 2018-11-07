@@ -6,52 +6,27 @@
 
     <link rel="stylesheet" type="text/css" href="css/piano.css" />
     <link rel="stylesheet" type="text/css" href="css/piano-color.css" />
+
+    <script src="js/vue.js"></script>
 </head>
 <body>
 
-<div id="p-wrapper">
-    <ul id="piano">
-        <li><div class="key anchor"></div></li>
-        <li><span class="key"></span></li>
-        <li><div class="key anchor"></div></li>
-        <li><span class="key"></span></li>
-        <li><div class="key anchor"></div></li>
-        <li><div class="key anchor"></div></li>
-        <li><span class="key"></span></li>
-        <li><div class="key anchor"></div></li>
-        <li><span class="key"></span></li>
-        <li><div class="key anchor"></div></li>
-        <li><span class="key"></span></li>
-        <li><div class="key anchor"></div></li>
+<div id="app">
+    <ul>
 
-
-        <li><div class="key anchor"></div></li>
-        <li><span class="key"></span></li>
-        <li><div class="key anchor"></div></li>
-        <li><span class="key"></span></li>
-        <li><div class="key anchor"></div></li>
-        <li><div class="key anchor"></div></li>
-        <li><span class="key"></span></li>
-        <li><div class="key anchor"></div></li>
-        <li><span class="key"></span></li>
-        <li><div class="key anchor"></div></li>
-        <li><span class="key"></span></li>
-        <li><div class="key anchor"></div></li>
-
-        <li><div class="key anchor"></div></li>
-        <li><span class="key"></span></li>
-        <li><div class="key anchor"></div></li>
-        <li><span class="key"></span></li>
-        <li><div class="key anchor"></div></li>
-        <li><div class="key anchor"></div></li>
-        <li><span class="key"></span></li>
-        <li><div class="key anchor"></div></li>
-        <li><span class="key"></span></li>
-        <li><div class="key anchor"></div></li>
-        <li><span class="key"></span></li>
-        <li><div class="key anchor"></div></li>
     </ul>
+
+    <div id="p-wrapper">
+        <ul id="piano">
+            <li v-for="(velocity, key) in velocities">
+                <span v-if="isBlackKey(key)" class="key"></span>
+                <div v-else class="key anchor"></div>
+            </li>
+        </ul>
+    </div>
 </div>
+
+<script src="js/app.js"></script>
 
 </body>
 </html>
