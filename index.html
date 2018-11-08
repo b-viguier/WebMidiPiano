@@ -7,22 +7,29 @@
     <link rel="stylesheet" type="text/css" href="css/piano.css" />
     <link rel="stylesheet" type="text/css" href="css/piano-color.css" />
 
+    <script src="js/webmidi.js"></script>
     <script src="js/vue.js"></script>
 </head>
 <body>
 
 <div id="app">
-    <ul>
 
-    </ul>
-
-    <div id="p-wrapper">
-        <ul id="piano">
-            <li v-for="(velocity, key) in velocities">
-                <span v-if="isBlackKey(key)" class="key"></span>
-                <div v-else class="key anchor"></div>
-            </li>
-        </ul>
+    <div v-if="errorMessage">{{ errorMessage }}</div>
+    <div v-else-if="midiInput == null">Looking for an input MIDI device…</div>
+    <div v-else>
+        <div>
+            <select v-model="selectedMidiInputId">
+                <option v-for="input in WebMidi.inputs" :value="input.id">{{ input.name }}</option>
+            </select>
+        </div>
+        <div id="p-wrapper">
+            <ul id="piano">
+                <li v-for="(velocity, key) in velocities">
+                    <span v-if="isBlackKey(key)" class="key" :style="velocityCss(velocity)"></span>
+                    <div v-else class="key anchor" :style="velocityCss(velocity)"></div>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
 
