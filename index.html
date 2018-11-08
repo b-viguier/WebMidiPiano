@@ -24,9 +24,9 @@
         </div>
         <div id="p-wrapper">
             <ul id="piano">
-                <li v-for="(velocity, key) in velocities">
-                    <span v-if="isBlackKey(key)" class="key" :style="velocityCss(velocity)"></span>
-                    <div v-else class="key anchor" :style="velocityCss(velocity)"></div>
+                <li v-for="(key, index) in keys">
+                    <span v-if="isBlackKey(index)" class="key" :style="velocityCss(key.velocity)"></span>
+                    <div v-else class="key anchor" :style="velocityCss(key.velocity)"></div>
                 </li>
             </ul>
         </div>

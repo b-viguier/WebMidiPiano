@@ -12,7 +12,7 @@ var app = new Vue({
         },
         'offset-keys': {
             type: Number,
-            default: 36,
+            default: 24,
             validator: function (value) {
                 return value > 0;
             }
@@ -23,12 +23,18 @@ var app = new Vue({
             errorMessage: null,
             selectedMidiInputId: null,
             midiInput: null,
-            velocities: []
+            keys: [],
+            holdPedal: false
         };
     },
     created: function () {
 
-        this.velocities = new Array(this.nbKeys).fill(0);
+        for(var i =0; i<this.nbKeys; ++i) {
+            this.keys.push({
+                velocity: 0,
+                pushed: false
+            });
+        }
 
         WebMidi.enable((errorMessage) => {
 
@@ -52,15 +58,35 @@ var app = new Vue({
             if(this.midiInput) {
                 this.midiInput.addListener('noteon', 'all', (event) => {
                     var note = event.note.number - this.offsetKeys;
-                    if(0 <= note && note < this.velocities.length) {
-                        Vue.set(this.velocities, note, event.velocity);
+                    if(0 <= note && note < this.keys.length) {
+                        this.keys[note].velocity = event.velocity;
+                        this.keys[note].pushed = true;
                     }
                 });
                 this.midiInput.addListener('noteoff', 'all', (event) => {
                     var note = event.note.number - this.offsetKeys;
-                    if(0 <= note && note < this.velocities.length) {
-                        Vue.set(this.velocities, note, 0);
+                    if(0 <= note && note < this.keys.length) {
+                        if(!this.holdPedal) {
+                            this.keys[note].velocity = 0;
+                        }
+                        this.keys[note].pushed = false;
                     }
+                });
+                this.midiInput.addListener('controlchange', 'all', (event) => {
+                    // Hold pedal
+                    if(event.controller.number == 64) {
+                        if(event.value > 0) {
+                            this.holdPedal = true;
+                        } else {
+                            this.holdPedal = false;
+                            for(var i =0; i<this.nbKeys; ++i) {
+                                if(!this.keys[i].pushed) {
+                                    this.keys[i].velocity = 0;
+                                }
+                            }
+                        }
+                    }
+
                 });
             }
         }
