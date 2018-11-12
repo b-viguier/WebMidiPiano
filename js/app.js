@@ -8,6 +8,7 @@ var app = new Vue({
         nbKeys: 61,
         offsetKeys: 24,
         transpose: 0,
+        uniformKeys: false,
         errorMessage: null,
         selectedMidiInputId: null,
         midiInput: null,
@@ -88,6 +89,9 @@ var app = new Vue({
         },
 
         isBlackKey(key) {
+            if(this.uniformKeys) {
+                return false;
+            }
             key = (this.offsetKeys + key) % 12;
             return (key < 5) == (key % 2);
         },
