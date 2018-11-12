@@ -74,7 +74,7 @@ var app = new Vue({
         }
     },
     methods: {
-        initKeyboard: function() {
+        initKeyboard() {
 
             var keys = [];
             for(var i = 0; i<this.nbKeys; ++i) {
@@ -87,14 +87,14 @@ var app = new Vue({
             this.keys = keys;
         },
 
-        isBlackKey: function (key) {
+        isBlackKey(key) {
             key = (this.offsetKeys + key) % 12;
             return (key < 5) == (key % 2);
         },
 
-        velocityCss: function (velocity) {
+        velocityCss(velocity) {
             return velocity > 0 ? {
-                background: 'linear-gradient(-25deg, rgba(168,14,14,'+velocity+'), rgba(245,34,34,'+velocity+'), rgba(191,32,32,'+velocity+'))'
+                background: `linear-gradient(-25deg, rgba(168,14,14,${velocity}), rgba(245,34,34,${velocity}), rgba(191,32,32,${velocity}))`
             } : {};
         }
     }

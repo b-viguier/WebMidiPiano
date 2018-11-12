@@ -19,7 +19,7 @@
     <div v-if="midiInput != null">
         <label for="midi-input">Midi Input:</label>
         <select id="midi-input" v-model="selectedMidiInputId">
-            <option v-for="input in WebMidi.inputs" :value="input.id">{{ input.name }}</option>
+            <option v-for="input in WebMidi.inputs" :value="input.id" :key="input.id">{{ input.name }}</option>
         </select>
 
         <label for="nb-keys">Number of Keys:</label>
