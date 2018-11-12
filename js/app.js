@@ -3,38 +3,20 @@ Object.defineProperty(Vue.prototype, 'WebMidi', { value: WebMidi });
 var app = new Vue({
     el: '#app',
     props: {
-        'nb-keys': {
-            type: Number,
-            default: 61,
-            validator: function (value) {
-                return value > 0;
-            }
-        },
-        'offset-keys': {
-            type: Number,
-            default: 24,
-            validator: function (value) {
-                return value > 0;
-            }
-        }
     },
-    data: function() {
-        return {
-            errorMessage: null,
-            selectedMidiInputId: null,
-            midiInput: null,
-            keys: [],
-            holdPedal: false
-        };
+    data:  {
+        nbKeys: 61,
+        offsetKeys: 24,
+        transpose: 0,
+        errorMessage: null,
+        selectedMidiInputId: null,
+        midiInput: null,
+        keys: [],
+        holdPedal: false
     },
     created: function () {
 
-        for(var i =0; i<this.nbKeys; ++i) {
-            this.keys.push({
-                velocity: 0,
-                pushed: false
-            });
-        }
+        this.initKeyboard();
 
         WebMidi.enable((errorMessage) => {
 
@@ -57,14 +39,14 @@ var app = new Vue({
             this.midiInput = WebMidi.getInputById(newMidiInputId);
             if(this.midiInput) {
                 this.midiInput.addListener('noteon', 'all', (event) => {
-                    var note = event.note.number - this.offsetKeys;
+                    var note = event.note.number - this.offsetKeys + this.transpose;
                     if(0 <= note && note < this.keys.length) {
                         this.keys[note].velocity = event.velocity;
                         this.keys[note].pushed = true;
                     }
                 });
                 this.midiInput.addListener('noteoff', 'all', (event) => {
-                    var note = event.note.number - this.offsetKeys;
+                    var note = event.note.number - this.offsetKeys + this.transpose;
                     if(0 <= note && note < this.keys.length) {
                         if(!this.holdPedal) {
                             this.keys[note].velocity = 0;
@@ -79,7 +61,7 @@ var app = new Vue({
                             this.holdPedal = true;
                         } else {
                             this.holdPedal = false;
-                            for(var i =0; i<this.nbKeys; ++i) {
+                            for(var i =0; i<this.keys.length; ++i) {
                                 if(!this.keys[i].pushed) {
                                     this.keys[i].velocity = 0;
                                 }
@@ -92,8 +74,21 @@ var app = new Vue({
         }
     },
     methods: {
+        initKeyboard: function() {
+
+            var keys = [];
+            for(var i = 0; i<this.nbKeys; ++i) {
+                keys.push({
+                    velocity: 0,
+                    pushed: false
+                });
+            }
+
+            this.keys = keys;
+        },
+
         isBlackKey: function (key) {
-            key = key % 12;
+            key = (this.offsetKeys + key) % 12;
             return (key < 5) == (key % 2);
         },
 
