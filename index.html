@@ -14,9 +14,9 @@
 
 <div id="app">
 
-    <div v-if="errorMessage">{{ errorMessage }}</div>
+    <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
     <div v-else-if="midiInput == null">Looking for an input MIDI device…</div>
-    <div v-if="midiInput != null">
+    <div v-if="midiInput != null" class="settings">
         <label for="midi-input">Midi Input:</label>
         <select id="midi-input" v-model="selectedMidiInputId">
             <option v-for="input in WebMidi.inputs" :value="input.id" :key="input.id">{{ input.name }}</option>
@@ -34,7 +34,7 @@
         <label for="uniform">Uniform Keys:</label>
         <input type="checkbox" id="uniform" v-model.boolean="uniformKeys">
     </div>
-    <div id="p-wrapper">
+    <div id="p-wrapper" v-bind:style="{width: width}">
         <ul id="piano">
             <li v-for="(key, index) in keys">
                 <span v-if="isBlackKey(index)" class="key" :style="velocityCss(key.velocity)"></span>

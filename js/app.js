@@ -22,7 +22,7 @@ var app = new Vue({
         WebMidi.enable((errorMessage) => {
 
             if (errorMessage) {
-                this.errorMessage = errorMessage;
+                this.errorMessage = '' + errorMessage;
                 console.log(errorMessage);
                 return;
             }
@@ -72,6 +72,11 @@ var app = new Vue({
 
                 });
             }
+        }
+    },
+    computed: {
+        width: function() {
+            return `${(this.nbKeys + 1) / 12 * 7 * 40}px`;
         }
     },
     methods: {
