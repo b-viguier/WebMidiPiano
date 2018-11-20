@@ -34,11 +34,15 @@
         <label for="uniform">Uniform Keys:</label>
         <input type="checkbox" id="uniform" v-model.boolean="uniformKeys">
     </div>
-    <div id="p-wrapper" v-bind:style="{width: width}">
+    <div id="p-wrapper" :style="{width: width}">
         <ul id="piano">
             <li v-for="(key, index) in keys">
-                <span v-if="isBlackKey(index)" class="key" :style="velocityCss(key.velocity)"></span>
-                <div v-else class="key anchor" :style="velocityCss(key.velocity)"></div>
+                <span v-if="isBlackKey(index)" class="key">
+                    <div style="width: 100%; height: 100%;" :style="velocityCss(key.velocity)"></div>
+                </span>
+                <div v-else class="key anchor">
+                    <div style="width: 100%; height: 100%;" :style="velocityCss(key.velocity)"></div>
+                </div>
             </li>
         </ul>
     </div>
