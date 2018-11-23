@@ -102,9 +102,14 @@ var app = new Vue({
         },
 
         velocityCss(velocity) {
-            return velocity > 0 ? {
-                background: `linear-gradient(-25deg, rgba(168,14,14,${velocity}), rgba(245,34,34,${velocity}), rgba(191,32,32,${velocity}))`
-            } : {};
+            if(velocity <= 0) {
+                return {};
+            }
+
+            var alpha = velocity * 0.4 + 0.6;
+            return {
+                background: `linear-gradient(-25deg, rgba(14,168,14,${alpha}), rgba(34,245,34,${alpha}), rgba(32,191,32,${alpha}))`
+            };
         }
     }
 });
