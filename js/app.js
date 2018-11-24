@@ -76,7 +76,9 @@ var app = new Vue({
     },
     computed: {
         width: function() {
-            return `${(this.nbKeys + 1) / 12 * 7 * 40}px`;
+            return this.uniformKeys ?
+                `${(this.nbKeys ) * 40}px`
+                : `${(this.nbKeys + 1) / 12/*keys/octaves*/ * 7/*white keys/octave*/ * 40}px`;
         }
     },
     methods: {
