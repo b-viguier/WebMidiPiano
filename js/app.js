@@ -9,6 +9,7 @@ var app = new Vue({
         offsetKeys: 24,
         transpose: 0,
         uniformKeys: false,
+        colors: false,
         errorMessage: null,
         selectedMidiInputId: null,
         midiInput: null,
@@ -103,15 +104,27 @@ var app = new Vue({
             return (key < 5) == (key % 2);
         },
 
-        velocityCss(velocity) {
+        velocityCss(velocity, index) {
             if(velocity <= 0) {
                 return {};
             }
 
+            var red = 34; var green = 245; var blue = 34;
+
+            if(this.colors) {
+                red = this.noteToColor(index);
+                green = this.noteToColor(index+4);
+                blue = this.noteToColor(index+8);
+            }
+
             var alpha = velocity * 0.4 + 0.6;
             return {
-                background: `linear-gradient(-25deg, rgba(14,168,14,${alpha}), rgba(34,245,34,${alpha}), rgba(32,191,32,${alpha}))`
+                background: `rgba(${red},${green},${blue},${alpha})`
             };
+        },
+
+        noteToColor(index) {
+            return Math.cos(((index*7)%12) / 12 * 2*Math.PI) * 256 / 2 + 256/2;
         }
     }
 });
