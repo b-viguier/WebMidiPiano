@@ -109,22 +109,11 @@ var app = new Vue({
                 return {};
             }
 
-            var red = 34; var green = 245; var blue = 34;
-
-            if(this.colors) {
-                red = this.noteToColor(index);
-                green = this.noteToColor(index+4);
-                blue = this.noteToColor(index+8);
-            }
-
             var alpha = velocity * 0.4 + 0.6;
+            var hue = this.colors ? ((index*7)%12) / 12 * 360 : 120;
             return {
-                background: `rgba(${red},${green},${blue},${alpha})`
+                background: `hsla(${hue},100%,50%,${alpha})`
             };
         },
-
-        noteToColor(index) {
-            return Math.cos(((index*7)%12) / 12 * 2*Math.PI) * 256 / 2 + 256/2;
-        }
     }
 });
